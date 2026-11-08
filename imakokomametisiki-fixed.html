@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>いまここまめちしき</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#FFFBF2; --bg2:#F6F0DD;
+--surface:#FFFFFF; --surface2:#FDF8EC;
+--text:#1C2521; --muted:#5F6F65; --muted2:#8A968E;
+--line:#E9DFC8; --line2:#EDE8D8;
+--teal:#0E7569; --teal-dark:#09594F; --teal-light:#E6F2EE;
+--accent:#E4572E; --accent-light:#FFF1E9;
+--yellow:#F2B705;
+--danger:#8B1E12; --danger-bg:#FDECEA; --danger-line:#F5C6C0;
+--ok:#137333;
+--shadow:0 10px 30px rgba(28,37,33,.08), 0 2px 8px rgba(28,37,33,.06);
+--shadow-sm:0 4px 16px rgba(28,37,33,.07);
+}
+@media (prefers-color-scheme: dark){
+:root{
+--bg:#121714; --bg2:#1A211D;
+--surface:#1E2622; --surface2:#232D28;
+--text:#EEF2EE; --muted:#A8B5AB;
+--line:#2E3A34; --line2:#2A332E;
+--teal:#2CB5A3; --teal-dark:#7EDDD0; --teal-light:#1E3531;
+--accent:#FF7A4D; --accent-light:#33231E;
+--danger:#FFB4A8; --danger-bg:#3A1E1A; --danger-line:#5A2E28;
+--ok:#7EDD9A;
+--shadow:0 10px 30px rgba(0,0,0,.35);
+--shadow-sm:0 4px 16px rgba(0,0,0,.25);
+}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,-apple-system,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input{font:inherit}
+button{cursor:pointer}
+button:active{transform:scale(.98)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* ---------- hero ---------- */
+.top{background:var(--teal);color:#fff;padding:28px 20px 84px;position:relative;overflow:hidden}
+.top::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08);border:28px solid rgba(255,255,255,.06)}
+.top-inner{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);padding:6px 12px;border-radius:999px;font-size:12px;letter-spacing:.08em;font-weight:700}
+.kicker i{width:7px;height:7px;background:#FFD166;border-radius:50%;display:block;box-shadow:0 0 0 4px rgba(255,209,102,.25)}
+h1{font-family:"Shippori Mincho B1",serif;font-size:clamp(28px,6vw,44px);line-height:1.15;margin:16px 0 10px;font-weight:800;letter-spacing:.02em}
+h1 span{color:#FFD166}
+.lead{font-size:15px;line-height:1.8;opacity:.92;max-width:620px;margin:0}
+.lead strong{background:rgba(255,255,255,.18);padding:1px 6px;border-radius:6px}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 40px}
+
+/* ---------- location card ---------- */
+.loc-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;margin-top:-52px;position:relative;z-index:2}
+.loc-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.loc-main{min-width:0;flex:1}
+.loc-label{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--muted)}
+.loc-address{font-size:18px;font-weight:700;line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
+.loc-meta{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6;overflow-wrap:anywhere}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+.badge-live{background:#E6F4EA;color:#137333;border-color:#A3D9B1}
+.badge-tracking{background:#FFF3CD;color:#7A5A00;border-color:#FFD166}
+.badge-shared{background:#E8EEFF;color:#1A3A8A;border-color:#A8BFFF}
+@media (prefers-color-scheme: dark){
+.badge-live{background:#1E3A2A;color:#7EDD9A;border-color:#2E5A3E}
+.badge-tracking{background:#3A2E0A;color:#FFD166;border-color:#5A4A12}
+.badge-shared{background:#1E2A4A;color:#A8C0FF;border-color:#334A7A}
+}
+.perm-state{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:9px 11px;border-radius:12px;background:var(--surface2);border:1px solid var(--line2);font-size:12.5px;line-height:1.6}
+.perm-state .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px;background:#B0B8B2}
+.perm-state[data-state="granted"] .dot{background:#1DB954;box-shadow:0 0 0 4px rgba(29,185,84,.16)}
+.perm-state[data-state="granted"]{border-color:#A3D9B1;background:#EFF8F1}
+.perm-state[data-state="prompt"] .dot{background:var(--yellow);box-shadow:0 0 0 4px rgba(242,183,5,.18)}
+.perm-state[data-state="denied"] .dot{background:#D93025;box-shadow:0 0 0 4px rgba(217,48,37,.14)}
+.perm-state[data-state="denied"]{border-color:var(--danger-line);background:#FFF3F1}
+@media (prefers-color-scheme: dark){
+.perm-state[data-state="granted"]{background:#1E2E22;border-color:#2E5A3E}
+.perm-state[data-state="denied"]{background:#2E1E1A}
+}
+.perm-state b{font-weight:800}
+.perm-sub{color:var(--muted);display:block;margin-top:1px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{appearance:none;border:0;border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:8px;justify-content:center;transition:background .15s,border-color .15s;text-decoration:none}
+.btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 16px rgba(14,117,105,.28);flex:1;min-width:160px}
+.btn-primary:hover{background:var(--teal-dark)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1.5px solid var(--line)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.linkrow{display:none;gap:10px;flex-wrap:wrap;margin-top:10px}
+.linkrow.show{display:flex}
+.linkrow .btn{flex:1;min-width:140px;font-size:13.5px;padding:12px 10px;white-space:nowrap}
+.coord{font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--surface2);border:1px solid var(--line2);padding:8px 10px;border-radius:10px;margin-top:12px;word-break:break-all;color:var(--muted);display:none}
+.coord.show{display:block}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media(max-width:640px){.how{grid-template-columns:1fr}}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.how b{font-size:13px}
+.how p{margin:4px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ---------- geolocation diagnostics (never stores coordinates) ---------- */
+.diagnostics{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface2);font-size:12px}
+.diagnostics summary{cursor:pointer;font-weight:700;color:var(--text)}
+.diagnostics pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--surface);border:1px solid var(--line2);padding:10px;border-radius:8px;font-size:11px;line-height:1.6}
+.diagnostics .diag-actions{display:flex;gap:8px;flex-wrap:wrap}
+.diagnostics .diag-actions button{font-size:12px;padding:8px 12px}
+/* ---------- status / ladder log ---------- */
+.status{font-size:13px;padding:12px 14px;border-radius:12px;margin-top:14px;line-height:1.6}
+.status[hidden]{display:none}
+.status-info{background:var(--teal-light);color:var(--teal-dark);border:1px solid var(--line)}
+.status-error{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-line)}
+@media (prefers-color-scheme: dark){.status-info{color:#A7E8DD}}
+.status-title{font-weight:800;font-size:14px;margin-bottom:6px}
+.status ol,.status ul{margin:8px 0 4px 18px;padding:0}
+.status li{margin:4px 0;line-height:1.65}
+.status-note{margin-top:10px;padding-top:8px;border-top:1px dashed currentColor;opacity:.92}
+.ladder{margin:10px 0 2px;padding:0;list-style:none}
+.ladder li{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;margin:5px 0;background:rgba(255,255,255,.55);border:1px solid rgba(139,30,18,.14);border-radius:10px;line-height:1.55;font-size:12.5px}
+@media (prefers-color-scheme: dark){.ladder li{background:rgba(255,255,255,.06);border-color:rgba(255,180,168,.22)}}
+.ladder .st{flex-shrink:0;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;margin-top:1px}
+.ladder .st-fail{background:#D93025;color:#fff}
+.ladder .st-run{background:#7A5A00;color:#FFE9A8;background:#5A4A12;color:#FFD166}
+.ladder .st-ok{background:#137333;color:#fff}
+.route-steps{margin:10px 0 0;padding:0;list-style:none;counter-reset:step}
+.route-steps li{counter-increment:step;position:relative;padding:11px 12px 11px 42px;margin:8px 0;background:rgba(255,255,255,.55);border:1px solid rgba(139,30,18,.14);border-radius:12px;line-height:1.65}
+.route-steps li::before{content:counter(step);position:absolute;left:10px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--danger);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+@media (prefers-color-scheme: dark){.route-steps li{background:rgba(255,255,255,.06);border-color:rgba(255,180,168,.22)}.route-steps li::before{background:#FF7A6B;color:#1A0E0B}}
+.route-name{font-weight:800}
+
+/* ---------- fallback notice ---------- */
+.fallback-notice{background:var(--accent-light);border:1.5px solid var(--accent);border-radius:16px;padding:16px;margin-top:16px}
+.fallback-notice[hidden]{display:none}
+.fallback-notice h3{margin:0;font-size:15px;line-height:1.4}
+.fallback-notice p{margin:6px 0 0;font-size:13px;line-height:1.7;color:var(--muted)}
+.fallback-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fallback-actions .btn{flex:1;min-width:130px}
+
+/* ---------- controls ---------- */
+.controls{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:16px;box-shadow:var(--shadow-sm);transition:border-color .25s,box-shadow .25s}
+.controls.fallback-active{border:2px solid var(--accent);box-shadow:0 0 0 5px var(--accent-light),var(--shadow)}
+.controls.fallback-active .ctrl-title{color:var(--accent)}
+.ctrl-title{font-size:12px;letter-spacing:.1em;font-weight:700;color:var(--muted);margin-bottom:10px}
+.segment{display:flex;background:var(--bg2);padding:4px;border-radius:999px;gap:4px;flex-wrap:wrap}
+.segment button{flex:1;min-width:64px;border:1px solid transparent;background:transparent;padding:9px 10px;border-radius:999px;font-weight:700;font-size:13px;color:var(--muted)}
+.segment button.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.08);border-color:var(--line)}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.chip{border:1.5px solid var(--line);background:var(--surface);padding:8px 13px;border-radius:999px;font-size:13px;font-weight:600;display:inline-flex;gap:6px;align-items:center;color:var(--text)}
+.chip:hover{border-color:var(--teal);color:var(--teal)}
+.chip.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.search-row{display:flex;gap:8px;margin-top:4px}
+.search-row input{flex:1;border:1.5px solid var(--line);background:var(--surface2);border-radius:999px;padding:11px 16px;outline:none;min-width:0;color:var(--text)}
+.search-row input:focus{border-color:var(--teal);background:var(--surface)}
+.hint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6}
+
+/* ---------- cards ---------- */
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:28px 0 14px;flex-wrap:wrap}
+.section-head h2{font-family:"Shippori Mincho B1",serif;font-size:22px;margin:0;line-height:1.2}
+.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.text-btn{background:none;border:0;color:var(--teal);font-weight:700;display:inline-flex;gap:6px;align-items:center;padding:8px 10px;font-size:14px}
+.highlight-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:700px){.highlight-grid{grid-template-columns:repeat(3,1fr)}}
+.h-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.h-card img{width:100%;height:150px;object-fit:cover;background:var(--bg2);display:block}
+.h-card .noimg{height:92px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-size:28px}
+.h-body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.dist{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--teal);background:var(--teal-light);align-self:flex-start;padding:4px 8px;border-radius:999px}
+.h-body h3{margin:0;font-size:16px;line-height:1.4}
+.h-body p{margin:0;font-size:13px;color:var(--muted);line-height:1.75;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card-foot{margin-top:auto;display:flex;gap:8px;padding-top:6px}
+.mini-btn{flex:1;text-align:center;text-decoration:none;font-size:12px;font-weight:700;padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.mini-btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.list{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:700px){.list{grid-template-columns:1fr 1fr}}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px}
+.item img{width:72px;height:72px;object-fit:cover;border-radius:12px;flex-shrink:0;background:var(--bg2)}
+.item-thumb{width:72px;height:72px;border-radius:12px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.item-main{min-width:0;flex:1}
+.item-main h3{margin:0;font-size:15px;line-height:1.4}
+.item-main p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.item-meta{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.item-meta a{font-size:12px;font-weight:700;color:var(--teal);text-decoration:none}
+.item-meta button{font-size:12px;font-weight:700;background:none;border:1px solid var(--line);padding:5px 9px;border-radius:999px;color:var(--text)}
+.empty{background:var(--surface2);border:1.5px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+.empty strong{color:var(--text);display:block;font-size:15px;margin-bottom:6px}
+.skeleton{height:110px;border-radius:16px;background:linear-gradient(90deg,var(--surface2) 25%,var(--bg2) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:20px;background:#111;color:#fff;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{max-width:960px;margin:0 auto;padding:8px 20px 28px;color:var(--muted);font-size:12px;line-height:1.8;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="top-inner">
+<div class="kicker"><i></i> いまここまめちしき ・ 位置情報で楽しむ散歩ガイド</div>
+<h1>いまいる場所の、<br><span>ちょっとした物語</span>を拾う。</h1>
+<p class="lead">現在地のまわりにある場所の由来や豆知識を、Wikipediaからその場で集めてカードにします。列待ちでも、散歩でも、旅先でも。<strong>このアプリに位置情報は保存しません。</strong></p>
+</div>
+</header>
+
+<div class="wrap">
+
+<!-- Location card -->
+<section class="loc-card" aria-label="現在地">
+<div class="loc-head">
+<div class="loc-main">
+<div class="loc-label">📍 いまの場所</div>
+<div class="loc-address" id="addressText">まだ取得していません</div>
+<div class="loc-meta" id="metaText">下のボタンから現在地を取得すると、近くのスポットの豆知識が並びます。プリセットから試すこともできます。</div>
+<div class="perm-state" id="permState" data-state="unknown" role="status" aria-live="polite">
+<span class="dot" aria-hidden="true"></span>
+<span><b id="permTitle">位置情報の権限を確認中…</b><span class="perm-sub" id="permSub">ブラウザの許可状態を読み取っています。</span></span>
+</div>
+</div>
+<span class="badge" id="statusBadge">● 未取得</span>
+</div>
+
+<div class="actions">
+<button class="btn btn-primary" id="getBtn" type="button">◎ 現在地を取得する</button>
+<button class="btn btn-secondary" id="trackBtn" type="button" aria-pressed="false">▶ 移動を追跡する</button>
+<button class="btn btn-secondary" id="mapBtn" type="button" disabled>地図で開く ↗</button>
+</div>
+<div class="linkrow" id="linkRow">
+<button class="btn btn-accent" id="shareLinkBtn" type="button">🔗 この場所のリンクを作る</button>
+<button class="btn btn-secondary" id="shareNativeBtn" type="button" hidden>共有する ⤴</button>
+</div>
+
+<div class="coord" id="coordText"></div>
+<div class="status" id="statusBox" hidden></div>
+<details class="diagnostics" id="geoDiagnostics">
+<summary>位置情報の診断情報（座標は含みません）</summary>
+<pre id="geoDiagnosticText">確認中…</pre>
+<div class="diag-actions">
+<button class="btn btn-secondary" id="geoDiagRefresh" type="button">診断を更新</button>
+<button class="btn btn-secondary" id="geoDiagCopy" type="button">診断結果をコピー</button>
+</div>
+</details>
+
+<div class="how">
+<div><b>1. 場所を決める</b><p>現在地取得、プリセット、地名検索のどれかで中心点を決めます。</p></div>
+<div><b>2. 半径を選ぶ</b><p>1kmは徒歩圏、5〜10kmは電車移動も含めた広い範囲です。</p></div>
+<div><b>3. カードを読む</b><p>気になったカードはコピーして、友だちにそのまま送れます。</p></div>
+</div>
+</section>
+
+<!-- Fallback notice: shown when GPS fails -->
+<div class="fallback-notice" id="fallbackNotice" hidden role="alert">
+<h3>📍 GPSが使えなくても大丈夫です</h3>
+<p>位置情報が取れなくても、下の<strong>プリセット</strong>（舞浜が先頭です）や<strong>地名検索</strong>で場所を選べば、その周辺の豆知識がそのまま表示されます。座標つきリンク（?lat=…&amp;lon=…）で開いた場合も、許可なしで即表示されます。</p>
+<div class="fallback-actions">
+<button class="btn btn-accent" id="fallbackPresetBtn" type="button">プリセットから選ぶ ↓</button>
+<button class="btn btn-secondary" id="fallbackSearchBtn" type="button" style="background:var(--surface)">地名で検索する ↓</button>
+</div>
+</div>
+
+<!-- Controls -->
+<section class="controls" id="controlsSection" aria-label="検索条件">
+<div class="ctrl-title">検索範囲</div>
+<div class="segment" id="radiusSeg" role="tablist" aria-label="半径">
+<button type="button" data-r="1">1 km</button>
+<button type="button" data-r="3" class="active">3 km</button>
+<button type="button" data-r="5">5 km</button>
+<button type="button" data-r="10">10 km</button>
+</div>
+
+<div class="ctrl-title" style="margin-top:16px">プリセットで試す</div>
+<div class="presets" id="presets">
+<button class="chip" type="button" data-lat="35.6329" data-lon="139.8804" data-name="舞浜・東京ディズニーリゾート">🏰 舞浜</button>
+<button class="chip" type="button" data-lat="35.6812" data-lon="139.7671" data-name="東京駅・丸の内">🚉 東京駅</button>
+<button class="chip" type="button" data-lat="35.7148" data-lon="139.7967" data-name="浅草・浅草寺周辺">🏮 浅草</button>
+<button class="chip" type="button" data-lat="35.6835" data-lon="140.0090" data-name="谷津干潟・谷津周辺">🌊 谷津</button>
+<button class="chip" type="button" data-lat="35.6789" data-lon="140.0245" data-name="実籾周辺">🏠 実籾</button>
+</div>
+
+<div class="ctrl-title" style="margin-top:16px">地名で探す</div>
+<div class="search-row">
+<input id="searchInput" type="search" placeholder="例：上野公園、鎌倉、舞浜駅" autocomplete="off">
+<button class="btn btn-accent" id="searchBtn" type="button" style="flex-shrink:0">検索</button>
+</div>
+<p class="hint">地名検索は OpenStreetMap のデータを使います。見つからないときは「駅」や区名を足してみてください。</p>
+</section>
+
+<!-- Highlights -->
+<div class="section-head">
+<div>
+<h2>✦ 今日のハイライト</h2>
+<p id="highlightSub">近くのスポットから 3 件をピックアップします</p>
+</div>
+<button class="text-btn" id="shuffleBtn" type="button" disabled>↻ シャッフル</button>
+</div>
+<div id="highlightArea">
+<div class="empty"><strong>まだカードがありません</strong>現在地を取得するか、上のプリセットを押してみてください。</div>
+</div>
+
+<!-- All spots -->
+<div class="section-head">
+<div>
+<h2>近くのスポット一覧</h2>
+<p id="listSub">距離の近い順に表示します ・ 出典はすべて Wikipedia です</p>
+</div>
+<span class="badge" id="countBadge">0 件</span>
+</div>
+<div id="listArea" class="list">
+<div class="empty" style="grid-column:1/-1"><strong>スポットはここに並びます</strong>写真・距離・ひとこと解説つき。タップで Wikipedia の全文が読めます。</div>
+</div>
+
+</div>
+
+<footer>
+豆知識の出典：Wikipedia（日本語版）の位置検索 API ／ 住所表示：OpenStreetMap Nominatim<br>
+位置情報はアプリ内に保存しません。近くの情報を検索する際は、選択した座標をWikipediaとOpenStreetMapのAPIに送ります。移動中は画面を見ず、安全に気をつけてご利用ください。
+</footer>
+
+<div class="toast" id="toast" role="status">コピーしました</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= state ================= */
+var state = {
+  lat:null, lon:null, label:"", source:"",   // source: gps | preset | shared
+  radiusKm:3,
+  results:[], highlights:[],
+  tracking:false, trackWatchId:null,
+  lastFetchAt:0, lastLat:null, lastLon:null,
+  busy:false
+};
+
+var $ = function(id){ return document.getElementById(id); };
+var els = {
+  address:$('addressText'), meta:$('metaText'), coord:$('coordText'),
+  badge:$('statusBadge'), getBtn:$('getBtn'), trackBtn:$('trackBtn'), mapBtn:$('mapBtn'),
+  linkRow:$('linkRow'), shareLinkBtn:$('shareLinkBtn'), shareNativeBtn:$('shareNativeBtn'),
+  statusBox:$('statusBox'),
+  permState:$('permState'), permTitle:$('permTitle'), permSub:$('permSub'),
+  highlightArea:$('highlightArea'), highlightSub:$('highlightSub'),
+  listArea:$('listArea'), countBadge:$('countBadge'), shuffleBtn:$('shuffleBtn'),
+  searchInput:$('searchInput'), searchBtn:$('searchBtn'),
+  radiusSeg:$('radiusSeg'), presets:$('presets'),
+  toast:$('toast'), controls:$('controlsSection'),
+  fallbackNotice:$('fallbackNotice'),
+  fallbackPresetBtn:$('fallbackPresetBtn'), fallbackSearchBtn:$('fallbackSearchBtn'),
+  diagText:$('geoDiagnosticText'), diagRefresh:$('geoDiagRefresh'), diagCopy:$('geoDiagCopy')
+};
+
+/* ================= utils ================= */
+function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function truncate(s,n){ if(!s) return ""; s=String(s).replace(/\s+/g," ").trim(); return s.length>n ? s.slice(0,n).trim()+"…" : s; }
+function haversine(lat1,lon1,lat2,lon2){
+  var R=6371000, rad=function(d){return d*Math.PI/180;};
+  var dLat=rad(lat2-lat1), dLon=rad(lon2-lon1);
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(rad(lat1))*Math.cos(rad(lat2))*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+function fmtDist(m){ if(m==null||isNaN(m)) return ""; return m<1000 ? Math.round(m)+" m" : (m/1000).toFixed(1)+" km"; }
+var toastTimer=null;
+function toast(msg){
+  els.toast.textContent=msg; els.toast.classList.add("show");
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ els.toast.classList.remove("show"); },2400);
+}
+function showStatus(html,type){
+  if(!html){ els.statusBox.innerHTML=""; els.statusBox.hidden=true; return; }
+  els.statusBox.className="status status-"+(type||"info");
+  els.statusBox.innerHTML=html; els.statusBox.hidden=false;
+}
+function copyToClipboard(text,okMsg){
+  function done(){ toast(okMsg||"コピーしました"); }
+  function fallback(){
+    var ta=document.createElement("textarea");
+    ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){ toast("コピーできませんでした"); }
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else fallback();
+}
+
+/* ================= permission state and local diagnostics ================= */
+var permObj=null, permListener=null, lastGeoError=null, permissionState="unknown";
+function geoEnvironment(){
+  var frame="不明", policy="不明", secure="不明";
+  try{ frame=window.self===window.top ? "最上位ページ" : "iframe内"; }catch(e){frame="iframe内（親へアクセス不可）";}
+  if(typeof window.isSecureContext==="boolean") secure=window.isSecureContext ? "はい" : "いいえ";
+  try{
+    var p=document.permissionsPolicy||document.featurePolicy;
+    if(p && typeof p.allowsFeature==="function") policy=p.allowsFeature("geolocation") ? "許可" : "禁止";
+  }catch(e){policy="確認不可";}
+  return {frame:frame,policy:policy,secure:secure};
+}
+function diagAdvice(){
+  var env=geoEnvironment();
+  if(env.secure==="いいえ") return "HTTPSの安全なページとして開いてください。";
+  if(env.policy==="禁止") return "ページの権限ポリシーにより遮断されています。配信元／埋め込み設定の修正が必要です。";
+  if(permissionState==="denied") return "サイト権限、ブラウザの位置情報設定、Androidのアプリ権限を確認してください。ポリシーやWebView側の制限もあり得ます。";
+  if(lastGeoError && lastGeoError.code===1) return "権限状態だけでは原因を特定できません。Chromeでサイト権限をリセットし、Androidのアプリ権限を確認してください。";
+  if(permissionState==="prompt") return "ボタンを押すと許可確認が表示される場合があります。表示されないときはブラウザ側の設定を確認してください。";
+  return "位置情報ボタンで動作を確認してください。";
+}
+function updateDiagnostics(){
+  var e=geoEnvironment();
+  var lines=[
+    "安全な実行環境 (HTTPS等): "+e.secure,
+    "ページの形態: "+e.frame,
+    "geolocation権限ポリシー: "+e.policy,
+    "Geolocation API: "+(!!navigator.geolocation ? "利用可能" : "利用不可"),
+    "Permissions API: "+(navigator.permissions&&navigator.permissions.query ? "利用可能" : "利用不可"),
+    "権限状態: "+permissionState,
+    "最後の取得エラー: "+(lastGeoError ? "code="+lastGeoError.code+" / "+lastGeoError.message : "なし"),
+    "見立て: "+diagAdvice(),
+    "※ 座標や住所を記録・送信しません。コピーはボタンを押したときだけ行います。"
+  ];
+  els.diagText.textContent=lines.join("\n");
+}
+function recordGeoError(err){
+  lastGeoError=err ? {code:typeof err.code==="number"?err.code:"不明",message:String(err.message||"詳細情報なし")} : null;
+  updateDiagnostics();
+}
+function renderPerm(stateName){
+  permissionState=stateName||"unknown";
+  els.permState.setAttribute("data-state",permissionState);
+  if(permissionState==="granted"){
+    els.permTitle.textContent="位置情報の権限：許可されています";
+    els.permSub.textContent="測位できるかは端末と実行環境にも依存します。";
+  }else if(permissionState==="prompt"){
+    els.permTitle.textContent="位置情報の権限：確認が必要です";
+    els.permSub.textContent="「現在地を取得する」を押すと確認が表示される場合があります。";
+  }else if(permissionState==="denied"){
+    els.permTitle.textContent="位置情報の権限：利用できない状態です";
+    els.permSub.textContent="サイト設定、Androidのアプリ権限、ページの権限ポリシーなどを確認してください。";
+  }else{
+    els.permTitle.textContent="位置情報の権限：自動確認できません";
+    els.permSub.textContent="ボタンから取得を試し、失敗時は下の診断情報を確認してください。";
+  }
+  updateDiagnostics();
+}
+function refreshPermission(){
+  if(!navigator.permissions || !navigator.permissions.query){ renderPerm("unknown"); return Promise.resolve("unknown"); }
+  return navigator.permissions.query({name:"geolocation"}).then(function(st){
+    if(permObj!==st){
+      if(permObj && permListener){
+        try{
+          if(permObj.removeEventListener) permObj.removeEventListener("change",permListener);
+          else if(permObj.onchange===permListener) permObj.onchange=null;
+        }catch(e){}
+      }
+      permObj=st;
+      permListener=function(){ renderPerm(st.state); };
+      try{
+        if(st.addEventListener) st.addEventListener("change",permListener);
+        else st.onchange=permListener;
+      }catch(e){}
+    }
+    renderPerm(st.state);
+    return st.state;
+  }).catch(function(){ renderPerm("unknown"); return "unknown"; });
+}
+els.diagRefresh.addEventListener("click",function(){ refreshPermission().then(updateDiagnostics); });
+els.diagCopy.addEventListener("click",function(){ copyToClipboard(els.diagText.textContent,"診断情報をコピーしました"); });
+
+/* ================= badges / fallback ================= */
+function setBadge(mode,text){
+  els.badge.className="badge"+(mode==="live"?" badge-live":mode==="tracking"?" badge-tracking":mode==="shared"?" badge-shared":"");
+  els.badge.textContent=text;
+}
+function showFallback(){
+  els.fallbackNotice.hidden=false;
+  els.controls.classList.add("fallback-active");
+  setTimeout(function(){
+    if(els.fallbackNotice.hidden) return;
+    var y=els.fallbackNotice.getBoundingClientRect().top+window.scrollY-14;
+    if(window.scrollY<y-220||window.scrollY>y+80) window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  },350);
+}
+function hideFallback(){ els.fallbackNotice.hidden=true; els.controls.classList.remove("fallback-active"); }
+
+/* ================= geocoding (Nominatim) ================= */
+function reverseGeocode(lat,lon){
+  var url="https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+encodeURIComponent(lat)+"&lon="+encodeURIComponent(lon)+"&accept-language=ja&zoom=16";
+  return fetch(url,{headers:{"Accept":"application/json"}}).then(function(r){ return r.json(); }).catch(function(){ return null; });
+}
+function forwardGeocode(q){
+  var url="https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=ja&q="+encodeURIComponent(q);
+  return fetch(url,{headers:{"Accept":"application/json"}}).then(function(r){ return r.json(); });
+}
+
+/* ================= place link (?lat=&lon=) ================= */
+function buildPlaceUrl(){
+  var q="?lat="+state.lat.toFixed(6)+"&lon="+state.lon.toFixed(6);
+  if(state.radiusKm && state.radiusKm!==3) q+="&radius="+state.radiusKm;
+  var name=(state.label||"").replace(/（共有された現在地）$/,"").replace(/^共有された現在地：/,"").trim();
+  if(name && state.source!=="gps") q+="&name="+encodeURIComponent(name);
+  // Resolve the query against this page's own address via an anchor element,
+  // so the link always points at the page the viewer opened it from.
+  var a=document.createElement("a");
+  a.href=q;
+  return a.href;
+}
+function updateLinkRow(){
+  var has=(state.lat!=null && state.lon!=null);
+  els.linkRow.classList.toggle("show",has);
+  if(has && navigator.share) els.shareNativeBtn.hidden=false;
+}
+els.shareLinkBtn.addEventListener("click",function(){
+  if(state.lat==null) return;
+  copyToClipboard(buildPlaceUrl(),"この場所のリンクをコピーしました");
+});
+els.shareNativeBtn.addEventListener("click",function(){
+  if(state.lat==null || !navigator.share) return;
+  var url=buildPlaceUrl();
+  var title=(state.label||"いまここ").replace(/（共有された現在地）$/,"");
+  navigator.share({title:"いまここまめちしき",text:title+" のまわりの豆知識",url:url}).catch(function(){});
+});
+
+/* ================= location core ================= */
+function setLocation(lat,lon,label,source){
+  state.lat=lat; state.lon=lon; state.label=label||""; state.source=source||"";
+  hideFallback();
+  els.coord.classList.add("show");
+  els.coord.textContent="緯度 "+lat.toFixed(5)+" ／ 経度 "+lon.toFixed(5)+"　・　半径 "+state.radiusKm+"km で検索"+(source==="shared"?"　・　共有された現在地":"");
+  els.mapBtn.disabled=false;
+  els.mapBtn.onclick=function(){ window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank","noopener"); };
+  updateLinkRow();
+
+  if(source==="shared"){
+    els.address.textContent=label||"共有された現在地";
+    els.meta.textContent="共有された現在地として表示しています。地名を調べています…";
+    setBadge("shared","● 共有された現在地");
+  }else if(label){
+    els.address.textContent=label;
+    els.meta.textContent="プリセット／検索から設定しました。まわりの豆知識を読み込んでいます…";
+    setBadge("live","● 取得済み");
+  }else{
+    els.address.textContent="現在地を取得しました";
+    els.meta.textContent="地名を調べています…";
+    if(!state.tracking) setBadge("live","● 取得済み");
+  }
+
+  if(source==="gps"||source==="shared"||!label){
+    reverseGeocode(lat,lon).then(function(data){
+      if(state.lat!==lat||state.lon!==lon) return; // stale
+      if(data && data.display_name){
+        var short=data.display_name;
+        if(data.address){
+          var a=data.address;
+          var parts=[a.city||a.town||a.village||a.county||"",a.suburb||a.neighbourhood||a.quarter||"",a.road||""].filter(Boolean);
+          if(parts.length) short=parts.join(" ");
+        }
+        if(source==="shared"){
+          els.address.textContent=short;
+          state.label=short+"（共有された現在地）";
+          els.meta.textContent="共有された現在地 ・ "+data.display_name;
+        }else if(source==="gps"){
+          els.address.textContent=short;
+          els.meta.textContent=data.display_name;
+        }
+      }else if(source!=="preset"){
+        els.meta.textContent="地名は取得できませんでしたが、近くのスポットは表示できます。";
+      }
+      updateLinkRow();
+    });
+  }
+  fetchNearby(lat,lon);
+}
+
+/* ================= Wikipedia nearby ================= */
+function setLoading(){
+  els.highlightArea.innerHTML='<div class="highlight-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>';
+  els.listArea.innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+  els.countBadge.textContent="読み込み中…";
+  els.shuffleBtn.disabled=true;
+}
+function fetchNearby(lat,lon){
+  setLoading();
+  var radiusM=Math.min(10000,state.radiusKm*1000);
+  var geoUrl="https://ja.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord="+lat+"%7C"+lon+"&gsradius="+radiusM+"&gslimit=50&format=json&origin=*";
+  fetch(geoUrl).then(function(r){ return r.json(); }).then(function(data){
+    var geos=(data&&data.query&&data.query.geosearch)||[];
+    if(!geos.length){
+      state.results=[]; state.highlights=[]; renderAll();
+      showStatus("この半径では Wikipedia のスポットが見つかりませんでした。半径を広げるか、場所を変えてみてください。","info");
+      return;
+    }
+    var distMap={}; geos.forEach(function(g){ distMap[g.pageid]=g.dist; });
+    var ids=geos.map(function(g){ return g.pageid; }).join("|");
+    var detailUrl="https://ja.wikipedia.org/w/api.php?action=query&prop=extracts%7Cpageimages%7Cinfo&exintro=1&explaintext=1&inprop=url&pithumbsize=900&pageids="+ids+"&format=json&origin=*";
+    return fetch(detailUrl).then(function(r){ return r.json(); }).then(function(d2){
+      var pages=(d2&&d2.query&&d2.query.pages)||{};
+      var arr=[];
+      Object.keys(pages).forEach(function(k){
+        var p=pages[k]; if(!p||!p.title) return;
+        arr.push({pageid:p.pageid,title:p.title,
+          dist:(distMap[p.pageid]!=null?distMap[p.pageid]:null),
+          extract:p.extract||"",
+          thumb:(p.thumbnail&&p.thumbnail.source)?p.thumbnail.source:"",
+          url:p.fullurl||("https://ja.wikipedia.org/wiki/"+encodeURIComponent(p.title))});
+      });
+      arr.sort(function(a,b){ return (a.dist||999999)-(b.dist||999999); });
+      state.results=arr;
+      pickHighlights();
+      renderAll();
+      if(state.keepStatus){ state.keepStatus=false; } else { showStatus("",""); }
+      els.meta.textContent=(els.meta.textContent?els.meta.textContent+"　":"")+arr.length+" 件のスポットが見つかりました（"+new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"})+" 更新）";
+    });
+  }).catch(function(){
+    showStatus("スポットの取得に失敗しました。通信環境を確認して、もう一度お試しください。","error");
+    els.highlightArea.innerHTML='<div class="empty"><strong>読み込めませんでした</strong>電波の良い場所で再試行してください。</div>';
+    els.listArea.innerHTML="";
+    els.countBadge.textContent="0 件";
+  });
+}
+function pickHighlights(){
+  if(!state.results.length){ state.highlights=[]; return; }
+  var pool=state.results.slice();
+  for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+  pool.sort(function(a,b){
+    var sa=(a.thumb?1:0)+(a.extract.length>80?1:0);
+    var sb=(b.thumb?1:0)+(b.extract.length>80?1:0);
+    return sb-sa;
+  });
+  state.highlights=pool.slice(0,3);
+}
+function cardText(item){ return item.title+"（"+fmtDist(item.dist)+"）\n"+truncate(item.extract,300)+"\n出典："+item.url; }
+function renderAll(){
+  if(!state.highlights.length){
+    els.highlightArea.innerHTML='<div class="empty"><strong>ハイライトはありません</strong>半径を広げると見つかりやすくなります。</div>';
+  }else{
+    var hh='<div class="highlight-grid">';
+    state.highlights.forEach(function(it,idx){
+      hh+='<article class="h-card">';
+      hh+= it.thumb ? '<img src="'+escapeHtml(it.thumb)+'" alt="'+escapeHtml(it.title)+'" loading="lazy" onerror="this.style.display=\'none\'">' : '<div class="noimg">📍</div>';
+      hh+='<div class="h-body"><span class="dist">'+escapeHtml(fmtDist(it.dist))+' ・ ハイライト</span><h3>'+escapeHtml(it.title)+'</h3><p>'+escapeHtml(truncate(it.extract||"解説は Wikipedia で読めます。",220))+'</p>';
+      hh+='<div class="card-foot"><a class="mini-btn primary" href="'+escapeHtml(it.url)+'" target="_blank" rel="noopener">Wikipediaで読む ↗</a><button class="mini-btn" type="button" data-copy="'+idx+'" data-scope="h">コピー</button></div>';
+      hh+='</div></article>';
+    });
+    hh+='</div>';
+    els.highlightArea.innerHTML=hh;
+    els.highlightSub.textContent=state.label? state.label+" のまわりから 3 件" : "いまの場所のまわりから 3 件 ・ シャッフルで入れ替えできます";
+  }
+  els.shuffleBtn.disabled=state.results.length<2;
+  if(!state.results.length){
+    els.listArea.innerHTML='<div class="empty" style="grid-column:1/-1"><strong>スポットがありません</strong>場所や半径を変えてみてください。</div>';
+    els.countBadge.textContent="0 件";
+    return;
+  }
+  els.countBadge.textContent=state.results.length+" 件";
+  var html="";
+  state.results.forEach(function(it,idx){
+    html+='<article class="item">';
+    html+= it.thumb ? '<img src="'+escapeHtml(it.thumb)+'" alt="" loading="lazy" onerror="this.outerHTML=\'&lt;div class=item-thumb&gt;📍&lt;/div&gt;\'">' : '<div class="item-thumb">📍</div>';
+    html+='<div class="item-main"><h3>'+escapeHtml(it.title)+'</h3>';
+    if(it.extract) html+='<p>'+escapeHtml(truncate(it.extract,180))+'</p>';
+    html+='<div class="item-meta"><span class="dist">'+escapeHtml(fmtDist(it.dist))+'</span><a href="'+escapeHtml(it.url)+'" target="_blank" rel="noopener">Wikipedia ↗</a><button type="button" data-copy="'+idx+'" data-scope="l">カードをコピー</button></div>';
+    html+='</div></article>';
+  });
+  els.listArea.innerHTML=html;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"),function(b){
+    b.addEventListener("click",function(){
+      var idx=parseInt(b.getAttribute("data-copy"),10);
+      var item=b.getAttribute("data-scope")==="h"? state.highlights[idx] : state.results[idx];
+      if(item) copyToClipboard(cardText(item),"「"+item.title+"」をコピーしました");
+    });
+  });
+}
+
+/* ================= geolocation ladder =================
+   Stage 1: getCurrentPosition (high accuracy, timeout 12s)
+   Stage 2: watchPosition — wait for the first fix (max 15s)
+   Stage 3: getCurrentPosition (low accuracy, maximumAge 60s)
+   Every stage outcome is recorded and shown on screen.        */
+function errName(err){
+  if(!err) return "不明なエラー";
+  if(err.code===1) return "許可がありません（PERMISSION_DENIED）";
+  if(err.code===2) return "位置を特定できません（POSITION_UNAVAILABLE）";
+  if(err.code===3) return "時間切れ（TIMEOUT）";
+  return "不明なエラー（code "+err.code+"）";
+}
+function ladderHtml(log,finalHtml){
+  var h='<ul class="ladder">';
+  log.forEach(function(s){
+    h+='<li><span class="st '+(s.ok?"st-ok":s.running?"st-run":"st-fail")+'">'+(s.ok?"成功":s.running?"実行中":"失敗")+'</span><span><b>'+escapeHtml(s.name)+'</b><br>'+escapeHtml(s.detail)+'</span></li>';
+  });
+  h+='</ul>';
+  return h+(finalHtml||"");
+}
+function fixAcquired(pos,log){
+  state.busy=false;
+  els.getBtn.disabled=false; els.getBtn.textContent="◎ 現在地を取得する";
+  recordGeoError(null);
+  renderPerm("granted"); refreshPermission();
+  var lat=pos.coords.latitude, lon=pos.coords.longitude, acc=pos.coords.accuracy;
+  state.lastLat=lat; state.lastLon=lon; state.lastFetchAt=Date.now();
+  var via=log.length? log[log.length-1].name : "GPS";
+  showStatus('<div class="status-title">現在地を取得しました</div>取得方法：'+escapeHtml(via)+' ／ 精度 約'+Math.round(acc)+'m ／ '+new Date().toLocaleTimeString("ja-JP")+' に取得'+ladderHtml(log),'info');
+  state.keepStatus=true;
+  setLocation(lat,lon,"","gps");
+  toast("現在地を取得しました");
+}
+function fixFailed(log,lastErr){
+  state.busy=false;
+  els.getBtn.disabled=false; els.getBtn.textContent="◎ 現在地を取得する";
+  recordGeoError(lastErr);
+  refreshPermission();
+  var code=lastErr && typeof lastErr.code==="number" ? lastErr.code : null;
+  var html="";
+  if(code===1){
+    var env=geoEnvironment();
+    html='<div class="status-title">位置情報を利用できません（エラー1：PERMISSION_DENIED）</div>'
+      +'原因は<strong>サイトの許可設定・Androidの権限・ブラウザ／WebView・ページの権限ポリシー</strong>のいずれかです。エラー1だけでは断定できません。'
+      +(env.secure==="いいえ"?'<div class="status-note">このページは安全な実行環境ではありません。HTTPSで公開したページを開いてください。</div>':'')
+      +(env.policy==="禁止"?'<div class="status-note">このページの権限ポリシーは geolocation を禁止しています。端末の設定変更では直せないため、配信元または埋め込み設定の修正が必要です。</div>':'')
+      +'<p class="route-name" style="margin:12px 0 0">Chromeで直接開いた場合</p>'
+      +'<ol class="route-steps">'
+      +'<li>Chrome の <strong>︙ → 設定 → サイトの設定 → 位置情報</strong> が「許可前に確認」になっているか確認する</li>'
+      +'<li>このページのアドレスバー左のサイト情報 → <strong>権限 → 位置情報</strong> を確認する。拒否済みなら<strong>権限をリセット</strong>して再読み込みする</li>'
+      +'<li>Android の <strong>設定 → アプリ → Chrome → 権限 → 位置情報</strong> を「使用中のみ許可」にし、端末本体の位置情報も ON にする</li>'
+      +'</ol>'
+      +'<p class="route-name" style="margin:12px 0 0">Museアプリ内で開いた場合</p>'
+      +'<ol class="route-steps">'
+      +'<li>Android の <strong>設定 → アプリ → Muse → 権限</strong> に位置情報があれば許可する（項目がない場合もあります）</li>'
+      +'<li>改善しなければChromeで公開URLを直接開いて試す。Museの内蔵ブラウザが位置情報許可要求に対応していない場合は、Webページ側だけでは直せません</li>'
+      +'</ol>'
+      +'<div class="status-note">下の<strong>「位置情報の診断情報」</strong>を開き、診断結果をコピーできます（座標は含みません）。使えない場合も、プリセットや地名検索、座標つきリンクで表示できます。</div>';
+  }else if(code===2){
+    html='<div class="status-title">現在地を特定できませんでした</div>'
+      +'3段階すべて試しましたが、端末が位置を測れませんでした。'
+      +'<ul><li>屋外や窓際など、空が見える場所で試してください</li><li>スマホの位置情報（GPS）が ON か確認してください</li><li>Wi-Fi を ON にすると精度が上がることがあります</li><li>機内モードが OFF か確認してください</li></ul>'
+      +'<div class="status-note">💡 急ぎのときは下の<strong>プリセット</strong>や<strong>地名検索</strong>でも同じように楽しめます。</div>';
+  }else if(code===3){
+    html='<div class="status-title">取得がタイムアウトしました</div>'
+      +'高精度 → 継続監視 → 低精度の3段階をすべて試しましたが、制限時間内に位置が定まりませんでした。電波の良い場所で、少し待ってもう一度「現在地を取得する」を押してください。'
+      +'<div class="status-note">💡 GPSなしでも使えます：下の<strong>プリセット</strong>や<strong>地名検索</strong>から場所を選んでください。</div>';
+  }else{
+    html='<div class="status-title">位置情報を取得できませんでした</div>'
+      +'3段階すべて失敗しました。通信や端末の状態を確認して、もう一度試すか、下のプリセット・地名検索をご利用ください。';
+  }
+  showStatus(html+ladderHtml(log),'error');
+  setBadge("","● 取得失敗");
+  showFallback();
+}
+function acquireLocation(){
+  if(state.busy) return;
+  // 権限照会は非同期。位置情報の要求はクリックイベント内で直接開始する。
+  refreshPermission();
+  if(!navigator.geolocation){
+    showStatus('<div class="status-title">このブラウザでは位置情報が使えません</div>下のプリセットや地名検索をお試しください。','error');
+    showFallback();
+    return;
+  }
+  if(state.tracking) stopTracking(true);
+  state.busy=true;
+  els.getBtn.disabled=true; els.getBtn.textContent="取得中…";
+  hideFallback();
+  recordGeoError(null);
+  var log=[];
+  showStatus('<div class="status-title">現在地を取得しています</div>許可ダイアログが出たら「許可」を押してください。高精度で取れない場合は、自動で別の方法に切り替えます。','info');
+
+  // Stage 1 — high accuracy getCurrentPosition
+  log.push({name:"第1段階：高精度GPS（getCurrentPosition）",detail:"実行中…",running:true});
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      log[0].running=false; log[0].ok=true; log[0].detail="取得できました（精度 約"+Math.round(pos.coords.accuracy)+"m）";
+      fixAcquired(pos,log);
+    },
+    function(err1){
+      log[0].running=false; log[0].ok=false; log[0].detail=errName(err1);
+      if(err1 && err1.code===1){ fixFailed(log,err1); return; } // denied: further stages cannot succeed
+      // Stage 2 — watchPosition, wait for first fix up to 15s
+      els.getBtn.textContent="継続監視で取得中…";
+      log.push({name:"第2段階：継続監視（watchPosition）",detail:"最初の1件が取れるまで最大15秒待ちます…",running:true});
+      showStatus('<div class="status-title">方法を切り替えて取得中です</div>高精度GPSで取れなかったため、継続監視で最初の測位を待っています。'+ladderHtml(log),'info');
+      var settled=false, wid=null, timer=null;
+      function stage2Done(){ if(wid!=null){ try{ navigator.geolocation.clearWatch(wid); }catch(e){} } if(timer) clearTimeout(timer); }
+      function stage3(){
+        els.getBtn.textContent="低精度で再試行中…";
+        log.push({name:"第3段階：低精度（Wi-Fi／基地局、キャッシュ60秒まで可）",detail:"実行中…",running:true});
+        showStatus('<div class="status-title">低精度モードで再試行中です</div>大まかな位置でも豆知識は楽しめます。'+ladderHtml(log),'info');
+        navigator.geolocation.getCurrentPosition(
+          function(pos){
+            log[2].running=false; log[2].ok=true; log[2].detail="取得できました（精度 約"+Math.round(pos.coords.accuracy)+"m）";
+            fixAcquired(pos,log);
+          },
+          function(err3){
+            log[2].running=false; log[2].ok=false; log[2].detail=errName(err3);
+            fixFailed(log,err3);
+          },
+          {enableHighAccuracy:false,timeout:15000,maximumAge:60000}
+        );
+      }
+      timer=setTimeout(function(){
+        if(settled) return; settled=true; stage2Done();
+        log[1].running=false; log[1].ok=false; log[1].detail="15秒待っても測位できませんでした";
+        stage3();
+      },15000);
+      try{
+        wid=navigator.geolocation.watchPosition(
+          function(pos){
+            if(settled) return; settled=true; stage2Done();
+            log[1].running=false; log[1].ok=true; log[1].detail="取得できました（精度 約"+Math.round(pos.coords.accuracy)+"m）";
+            fixAcquired(pos,log);
+          },
+          function(err2){
+            if(settled) return;
+            if(err2 && err2.code===1){ settled=true; stage2Done(); log[1].running=false; log[1].ok=false; log[1].detail=errName(err2); fixFailed(log,err2); }
+            // code 2/3 errors from watch are transient; keep waiting until the 15s timer
+          },
+          {enableHighAccuracy:true,timeout:15000,maximumAge:0}
+        );
+      }catch(e){
+        if(!settled){
+          settled=true; stage2Done();
+          log[1].running=false; log[1].ok=false; log[1].detail="継続監視を開始できませんでした";
+          stage3();
+        }
+      }
+    },
+    {enableHighAccuracy:true,timeout:12000,maximumAge:10000}
+  );
+}
+els.getBtn.addEventListener("click",acquireLocation);
+
+/* ================= tracking mode ================= */
+function stopTracking(silent){
+  if(state.trackWatchId!=null){ try{ navigator.geolocation.clearWatch(state.trackWatchId); }catch(e){} }
+  state.trackWatchId=null; state.tracking=false;
+  els.trackBtn.textContent="▶ 移動を追跡する"; els.trackBtn.setAttribute("aria-pressed","false");
+  setBadge(state.lat!=null?"live":"", state.lat!=null?"● 取得済み":"● 未取得");
+  if(!silent) showStatus("追跡を停止しました。","info");
+}
+els.trackBtn.addEventListener("click",function(){
+  if(state.tracking){ stopTracking(false); return; }
+  if(state.busy){ toast("現在地の取得が終わってから追跡を開始してください"); return; }
+  if(!navigator.geolocation){ showStatus("このブラウザでは追跡が使えません。","error"); return; }
+  state.tracking=true;
+  els.trackBtn.textContent="■ 追跡を止める"; els.trackBtn.setAttribute("aria-pressed","true");
+  setBadge("tracking","● 追跡中");
+  showStatus("移動を追跡しています。120m以上移動すると、まわりの豆知識を自動で更新します。","info");
+  state.trackWatchId=navigator.geolocation.watchPosition(
+    function(pos){
+      renderPerm("granted");
+      var lat=pos.coords.latitude, lon=pos.coords.longitude;
+      if(state.lastLat!=null){
+        var d=haversine(state.lastLat,state.lastLon,lat,lon);
+        if(d<120 && (Date.now()-state.lastFetchAt)<30000) return;
+      }
+      state.lastLat=lat; state.lastLon=lon; state.lastFetchAt=Date.now();
+      setBadge("tracking","● 追跡中");
+      setLocation(lat,lon,"","gps");
+    },
+    function(err){
+      if(err && err.code===1){
+        stopTracking(true);
+        var log=[{name:"移動の追跡（watchPosition）",detail:errName(err),ok:false}];
+        fixFailed(log,err);
+      }else{
+        recordGeoError(err);
+        showStatus("移動の追跡中：一時的に位置を取得できません（"+escapeHtml(errName(err))+"）。次の測位を待ちます。","info");
+      }
+    },
+    {enableHighAccuracy:true,timeout:20000,maximumAge:5000}
+  );
+});
+
+/* ================= controls ================= */
+els.radiusSeg.addEventListener("click",function(e){
+  var btn=e.target.closest("button"); if(!btn) return;
+  Array.prototype.forEach.call(els.radiusSeg.querySelectorAll("button"),function(b){ b.classList.remove("active"); });
+  btn.classList.add("active");
+  state.radiusKm=parseInt(btn.getAttribute("data-r"),10);
+  if(state.lat!=null){
+    els.coord.textContent="緯度 "+state.lat.toFixed(5)+" ／ 経度 "+state.lon.toFixed(5)+"　・　半径 "+state.radiusKm+"km で検索"+(state.source==="shared"?"　・　共有された現在地":"");
+    updateLinkRow();
+    fetchNearby(state.lat,state.lon);
+  }else{
+    toast("半径を "+state.radiusKm+"km にしました");
+  }
+});
+els.presets.addEventListener("click",function(e){
+  var btn=e.target.closest("button"); if(!btn) return;
+  Array.prototype.forEach.call(els.presets.querySelectorAll("button"),function(b){ b.classList.remove("active"); });
+  btn.classList.add("active");
+  var lat=parseFloat(btn.getAttribute("data-lat")), lon=parseFloat(btn.getAttribute("data-lon")), name=btn.getAttribute("data-name");
+  state.lastLat=lat; state.lastLon=lon; state.lastFetchAt=Date.now();
+  setLocation(lat,lon,name,"preset");
+  toast(name+" に設定しました");
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+function doSearch(){
+  var q=els.searchInput.value.trim();
+  if(!q){ toast("地名を入力してください"); return; }
+  els.searchBtn.disabled=true; els.searchBtn.textContent="検索中…";
+  showStatus("「"+escapeHtml(q)+"」を探しています…","info");
+  forwardGeocode(q+" 日本").then(function(res){
+    els.searchBtn.disabled=false; els.searchBtn.textContent="検索";
+    if(!res||!res.length){ showStatus("「"+escapeHtml(q)+"」が見つかりませんでした。表記を変えるか、近くの駅名で試してください。","error"); return; }
+    var r=res[0], lat=parseFloat(r.lat), lon=parseFloat(r.lon);
+    var label=r.display_name? r.display_name.split(",").slice(0,2).join(" ") : q;
+    state.lastLat=lat; state.lastLon=lon; state.lastFetchAt=Date.now();
+    setLocation(lat,lon,label+"（"+q+"）","preset");
+    showStatus("","");
+  }).catch(function(){
+    els.searchBtn.disabled=false; els.searchBtn.textContent="検索";
+    showStatus("地名検索に失敗しました。通信を確認してください。","error");
+  });
+}
+els.searchBtn.addEventListener("click",doSearch);
+els.searchInput.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); doSearch(); } });
+els.shuffleBtn.addEventListener("click",function(){ pickHighlights(); renderAll(); toast("ハイライトを入れ替えました"); });
+els.fallbackPresetBtn.addEventListener("click",function(){
+  els.controls.scrollIntoView({behavior:"smooth",block:"start"});
+  setTimeout(function(){ var f=els.presets.querySelector("button"); if(f) f.focus({preventScroll:true}); },450);
+});
+els.fallbackSearchBtn.addEventListener("click",function(){
+  els.controls.scrollIntoView({behavior:"smooth",block:"start"});
+  setTimeout(function(){ els.searchInput.focus({preventScroll:true}); },450);
+});
+
+/* ================= init: ?lat=&lon= shared location ================= */
+function initFromUrlParams(){
+  try{
+    var params=new URLSearchParams(window.location.search||"");
+    var latRaw=params.get("lat")||params.get("latitude");
+    var lonRaw=params.get("lon")||params.get("lng")||params.get("longitude");
+    if(!latRaw||!lonRaw) return false;
+    var lat=parseFloat(latRaw), lon=parseFloat(lonRaw);
+    if(isNaN(lat)||isNaN(lon)||lat<-90||lat>90||lon<-180||lon>180) return false;
+    var rRaw=params.get("radius")||params.get("r");
+    if(rRaw){
+      var rv=parseInt(rRaw,10);
+      if([1,3,5,10].indexOf(rv)!==-1){
+        state.radiusKm=rv;
+        Array.prototype.forEach.call(els.radiusSeg.querySelectorAll("button"),function(b){
+          b.classList.toggle("active",parseInt(b.getAttribute("data-r"),10)===rv);
+        });
+      }
+    }
+    var nameParam=params.get("label")||params.get("name")||params.get("place")||"";
+    var label=nameParam? ("共有された現在地："+nameParam) : "共有された現在地";
+    state.lastLat=lat; state.lastLon=lon; state.lastFetchAt=Date.now();
+    state.keepStatus=true;
+    setLocation(lat,lon,label,"shared");
+    showStatus("共有された現在地（緯度 "+lat.toFixed(5)+"／経度 "+lon.toFixed(5)+"）から表示しています。GPSの許可は不要です。","info");
+    return true;
+  }catch(e){ return false; }
+}
+
+updateDiagnostics();
+refreshPermission();
+document.addEventListener("visibilitychange",function(){ if(!document.hidden) refreshPermission(); });
+window.addEventListener("focus",function(){ refreshPermission(); });
+initFromUrlParams();
+})();
+</script>
+</body>
+</html>
